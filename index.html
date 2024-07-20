@@ -3,49 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MineSpot - Everything Minecraft</title>
+    <title>MineSpot - Search Everything Minecraft</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        header {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #333;
+            color: white;
             text-align: center;
         }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            max-width: 600px;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-            font-size: 2.5em;
-        }
-        p {
-            color: #666;
-            font-size: 1.2em;
-        }
-        .nav {
+        header nav ul {
+            list-style: none;
+            padding: 0;
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
         }
-        .nav a {
-            color: #007bff;
+        header nav ul li {
+            margin: 0 10px;
+        }
+        header nav ul li a {
+            color: white;
             text-decoration: none;
-            font-size: 1.1em;
         }
-        .nav a:hover {
+        header nav ul li a:hover {
             text-decoration: underline;
+        }
+        .content {
+            margin: 20px;
+            max-width: 800px;
+            text-align: left;
+        }
+        .content h2 {
+            text-align: center;
+        }
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .search-container input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+        }
+        .search-container button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        .create-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .create-container button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .create-container button:hover {
+            background-color: #218838;
+        }
+        .form-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+        .form-container input, .form-container button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .arg-grid, .site-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 80%;
+            margin: 20px 0;
+        }
+        .arg-card, .site-card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .arg-card img, .site-card img {
+            max-width: 100%;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .arg-card h3, .site-card h3 {
+            margin: 10px 0;
+            font-size: 1.2em;
         }
         .footer-container {
             text-align: center;
@@ -56,21 +136,139 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>MineSpot</h1>
-        <p>Your ultimate destination for everything Minecraft</p>
-        <div class="nav">
-            <a href="mods.html">Mods</a>
-            <a href="skins.html">Skins</a>
-            <a href="maps.html">Maps</a>
-            <a href="news.html">News</a>
-            <a href="community.html">Community</a>
-        </div>
+    <header>
+        <h1>MineSpot - Search Everything Minecraft</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="search.html">Search</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search for Minecraft content...">
+        <button onclick="searchContent()">Search</button>
+    </div>
+    <div class="create-container">
+        <button onclick="toggleForm()">Create New</button>
+    </div>
+    <div class="form-container" id="form-container">
+        <input type="text" id="name-input" placeholder="Name">
+        <input type="text" id="description-input" placeholder="Description">
+        <input type="text" id="image-url-input" placeholder="Logo Image URL">
+        <input type="text" id="url-input" placeholder="Redirect Link">
+        <button onclick="createNew()">Submit</button>
+    </div>
+    <div class="arg-grid" id="arg-grid">
+        <!-- ARG cards will be displayed here -->
+    </div>
+    <div class="site-grid" id="site-grid">
+        <!-- Site cards will be displayed here -->
     </div>
     <div class="footer-container">
         <footer>
             <p>MineSpot - Your ultimate destination for everything Minecraft.</p>
         </footer>
     </div>
+    <script>
+        const GITHUB_JSON_URL = 'https://minespot.netlify.app/data.json';
+
+        async function fetchData() {
+            try {
+                const response = await fetch(GITHUB_JSON_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return null;
+            }
+        }
+
+        function displayContent(contentToDisplay, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+            contentToDisplay.forEach(content => {
+                const card = document.createElement('div');
+                card.className = gridId === 'arg-grid' ? 'arg-card' : 'site-card';
+                card.innerHTML = `
+                    <img src="${content.image || content.icon}" alt="${content.name}">
+                    <h3>${content.name}</h3>
+                    <p>${content.description || ''}</p>
+                `;
+                card.onclick = () => window.location.href = content.url;
+                grid.appendChild(card);
+            });
+        }
+
+        function searchContent() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const filteredARGs = args.filter(arg => arg.name.toLowerCase().includes(searchInput));
+            const filteredSites = sites.filter(site => site.name.toLowerCase().includes(searchInput));
+            displayContent(filteredARGs, 'arg-grid');
+            displayContent(filteredSites, 'site-grid');
+        }
+
+        function toggleForm() {
+            const formContainer = document.getElementById('form-container');
+            formContainer.style.display = formContainer.style.display === 'none' || formContainer.style.display === '' ? 'flex' : 'none';
+        }
+
+        async function createNew() {
+            const name = document.getElementById('name-input').value;
+            const description = document.getElementById('description-input').value;
+            const imageUrl = document.getElementById('image-url-input').value;
+            const url = document.getElementById('url-input').value;
+
+            const newContent = {
+                name,
+                description,
+                image: imageUrl,
+                url
+            };
+
+            try {
+                const response = await fetch('/.netlify/functions/createContent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newContent),
+                });
+
+                if (response.ok) {
+                    args.push(newContent);
+                    displayContent(args, 'arg-grid');
+                    toggleForm();
+                } else {
+                    console.error('Failed to create new content');
+                    alert('Failed to create new content');
+                }
+            } catch (error) {
+                console.error('Error creating new content:', error);
+                alert('Error creating new content:', error);
+            }
+        }
+
+        // Load initial data and display on page load
+        let args = [];
+        let sites = [];
+        fetchData().then(data => {
+            if (data) {
+                args = data.args;
+                sites = data.sites;
+                displayContent(args, 'arg-grid');
+                displayContent(sites, 'site-grid');
+            } else {
+                console.error('Failed to fetch data.');
+                alert('Failed to fetch data.');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('Error:', error);
+        });
+    </script>
 </body>
 </html>
